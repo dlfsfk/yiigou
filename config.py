@@ -4,8 +4,8 @@ import pymysql
 conn = pymysql.connect(
         host='127.0.0.1',
         port=3306,
-        db='suibian',
+        db='yigou',
         user='root',
-        password='root',
+        password='123123',
         charset='utf8'
     )
