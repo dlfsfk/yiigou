@@ -16,14 +16,11 @@ def cors(environ):
     environ.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
     return environ
 
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
 
 
 @app.route('/login', methods=['POST', 'OPTIONS'])
 def loginRoute():
-    data = str(request.get_data())[12:-2]
+    data = str(request.get_data())[2:-1]
     params = json.loads(data)
     account = params['loginId']
     password = params['loginPwd']
@@ -59,13 +56,13 @@ def register():
         response['result'] = {}
         response['code'] = 0
     return response
-@app.route("/housePriceTrend")
+
+
+@app.route("/housePriceTrend", methods=['GET', 'OPTIONS'])
 def housePriceTrend():
-    data = str(request.get_data())[12:-2]
-    params = json.loads(data)
-    city = params['city']
-    area = params['area']
-    result=search(city,area)
+    city = request.values.get("city")
+    area = request.values.get("area")
+    result = search(city, area)
     response = {}
     if result:
         response['msg'] = "搜索成功"
