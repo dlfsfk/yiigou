@@ -3,6 +3,7 @@ from flask_cors import CORS
 import json
 from util.login import login
 from util.register import add_user
+from util.reptile import search
 
 app = Flask(__name__)
 CORS(app, resources=r'/*')
@@ -55,6 +56,23 @@ def register():
         response['code'] = 1
     else:
         response['msg'] = "注册失败"
+        response['result'] = {}
+        response['code'] = 0
+    return response
+@app.route("/housePriceTrend")
+def housePriceTrend():
+    data = str(request.get_data())[12:-2]
+    params = json.loads(data)
+    city = params['city']
+    area = params['area']
+    result=search(city,area)
+    response = {}
+    if result:
+        response['msg'] = "搜索成功"
+        response['result'] = result
+        response['code'] = 1
+    else:
+        response['msg'] = "搜索失败，城市或区域错误"
         response['result'] = {}
         response['code'] = 0
     return response
