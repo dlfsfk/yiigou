@@ -4,6 +4,7 @@ import json
 from util.login import login
 from util.register import add_user
 from util.reptile import search
+from util.captcha import captcha1
 
 app = Flask(__name__)
 CORS(app, resources=r'/*')
@@ -74,6 +75,14 @@ def housePriceTrend():
         response['code'] = 0
     return response
 
+@app.route("/getCaptcha")
+def yanzhengma():
+    #用户名 查看用户名请登录用户中心->验证码、通知短信->帐户及签名设置->APIID
+
+    phone = request.values.get("phone")
+    result =captcha1(phone)
+
+    return result
 
 if __name__ == '__main__':
     app.run(
