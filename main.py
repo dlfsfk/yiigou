@@ -4,7 +4,7 @@ import json
 from util.login import login
 from util.register import add_user
 from util.reptile import search
-from util.captcha import captcha1
+from util.captcha import getCaptcha
 
 app = Flask(__name__)
 CORS(app, resources=r'/*')
@@ -43,18 +43,23 @@ def loginRoute():
 
 @app.route("/register", methods=['POST', 'OPTIONS'])
 def register():
-    account = request.form['account']
-    password = request.form['password']
-    name = request.form['name']
+    data = str(request.get_data())[2:-1]
+    params = json.loads(data)
+    account = params['account']
+    password = params['password']
+    name = params['name']
     result = add_user(account, password, name)
     response = {}
+    info={}
     if result:
+        info['success'] = 1
         response['msg'] = "注册成功"
-        response['result'] = {}
+        response['result'] = info
         response['code'] = 1
     else:
+        info['success'] = 0
         response['msg'] = "注册失败"
-        response['result'] = {}
+        response['result'] = info
         response['code'] = 0
     return response
 
@@ -76,13 +81,21 @@ def housePriceTrend():
     return response
 
 @app.route("/getCaptcha")
-def yanzhengma():
+def captchaRouter():
     #用户名 查看用户名请登录用户中心->验证码、通知短信->帐户及签名设置->APIID
 
     phone = request.values.get("phone")
-    result =captcha1(phone)
-
-    return result
+    result =getCaptcha(phone)
+    response = {}
+    if result:
+        response['msg'] = "验证码发送成功"
+        response['result'] = result
+        response['code'] = 1
+    else:
+        response['msg'] = "验证码发送失败"
+        response['result'] = {}
+        response['code'] = 0
+    return response
 
 if __name__ == '__main__':
     app.run(

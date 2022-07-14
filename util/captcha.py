@@ -3,7 +3,7 @@ import requests
 import random
 
 
-def captcha1(phone):
+def getCaptcha(phone):
     #用户名 查看用户名请登录用户中心->验证码、通知短信->帐户及签名设置->APIID
 
     account = "C71764951"
@@ -31,9 +31,9 @@ def captcha1(phone):
     # req = requests.post(url=url, data=data)
     # #使用.text读取返回的内容
     # content =req.text
-    content={}
-    content['captcha'] = code
-    print(content)
+    # content={}
+    # content['captcha'] = code
     #打印出返回的内容
-    return content
-captcha1(15272156747)
+    print(code)
+    return code
+
