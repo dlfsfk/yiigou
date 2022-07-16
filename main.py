@@ -1,3 +1,5 @@
+import urllib
+
 from flask import Flask, request
 from flask_cors import CORS
 import json
@@ -47,7 +49,7 @@ def register():
     params = json.loads(data)
     account = params['account']
     password = params['password']
-    name = params['name']
+    name = urllib.parse.unquote(params['name'])
     result = add_user(account, password, name)
     response = {}
     info={}
@@ -83,7 +85,6 @@ def housePriceTrend():
 @app.route("/getCaptcha")
 def captchaRouter():
     #用户名 查看用户名请登录用户中心->验证码、通知短信->帐户及签名设置->APIID
-
     phone = request.values.get("phone")
     result =getCaptcha(phone)
     response = {}
