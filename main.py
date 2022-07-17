@@ -3,10 +3,10 @@ import urllib
 from flask import Flask, request
 from flask_cors import CORS
 import json
-from util.login import login
-from util.register import add_user
-from util.reptile import search
-from util.captcha import getCaptcha
+from model.login import login
+from model.register import add_user
+from model.reptile import search
+from model.captcha import getCaptcha
 
 app = Flask(__name__)
 CORS(app, resources=r'/*')
