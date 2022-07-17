@@ -3,6 +3,21 @@ import requests
 from util.html_downloader import HtmlDownloader
 import pandas as pd
 
+import os
+
+
+def is_fioat(s):
+    s=str(s)
+    if s.count(".")==1:#小数点个数
+        s_list=s.split(".")
+        left = s_list[0]#小数点左边
+        right =s_list[1]#小数点右边
+        if left.isdigit() and right.isdigit():
+            return  True
+        elif left.startswith('-') and left.count('-')==1 and left.split('-')[1].isdigit()and right.isdigit():
+            return  True
+    return  False
+# print(is_fioat("-5.56"))
 
 def search(city, district):
     headers = {
@@ -38,6 +53,9 @@ def search(city, district):
 
     # print(df)
     # 一页有多个表格，遍历
+    exit = os.path.exists('result.csv')
+    if exit:
+        os.remove('result.csv')
     cnt = 0
     for df1 in df:
         cnt = cnt + 1
@@ -56,29 +74,26 @@ def search(city, district):
     for a in c1:
 
         if j<10:
-            if a.isdigit():
+            # if a.isdigit():
                 c1 = 0.001 * float(a)
                 c2.append("{:.3f}".format(c1))
-        else:
-            if a.isdigit():
+        if j>10:
+            # if a.isdigit():
                 c1 = 0.001 * float(a)
                 c3.append("{:.3f}".format(c1))
         j+=1
     d1=list(p["涨跌幅"])
     d2=[]
     d3=[]
-    d4=[]
     k=0
     for a in d1:
         d1 = a[1:-1]
-        d4 = a[1:-4]
         # print(d1)
         if k<10:
-            if d4.isdigit():
-                print(100)
+            # if is_fioat(d1):
                 d2.append(float(d1))
-        else:
-            if d4.isdigit():
+        if k>10:
+            # if is_fioat(d1):
                 d3.append(float(d1))
         k+=1
     e1=list(p["小区名称"])
