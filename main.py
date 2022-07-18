@@ -4,7 +4,7 @@ from flask import Flask, request
 from flask_cors import CORS
 import json
 from model.login import login
-from model.register import add_user
+from model.register import add_user, find_user_by_name, find_user_by_account
 from model.reptile import search
 from model.captcha import getCaptcha
 
@@ -61,6 +61,30 @@ def register():
         info['success'] = 0
         response['msg'] = "注册失败"
         response['result'] = info
+        response['code'] = 0
+    return response
+
+
+@app.route("/checkAccount", methods=['GET', 'OPTIONS'])
+def checkAccount():
+    account = request.values.get("account")
+    result = find_user_by_account(account)
+    response = {}
+    if result:
+        response['msg'] = "账号已被注册"
+        response['result'] = {}
+        response['code'] = 0
+    return response
+
+
+@app.route("/checkName", methods=['GET', 'OPTIONS'])
+def checkName():
+    name = request.values.get("name")
+    result = find_user_by_name(name)
+    response = {}
+    if result:
+        response['msg'] = "用户名已存在"
+        response['result'] = {}
         response['code'] = 0
     return response
 
