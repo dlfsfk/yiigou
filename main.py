@@ -20,7 +20,6 @@ def cors(environ):
     return environ
 
 
-
 @app.route('/login', methods=['POST', 'OPTIONS'])
 def loginRoute():
     data = str(request.get_data())[2:-1]
@@ -38,7 +37,7 @@ def loginRoute():
         response['code'] = 1
     else:
         response['msg'] = "登录失败，账号或密码错误"
-        response['result'] = {}
+        response['result'] = "登录失败"
         response['code'] = 0
     return response
 
@@ -52,7 +51,7 @@ def register():
     name = urllib.parse.unquote(params['name'])
     result = add_user(account, password, name)
     response = {}
-    info={}
+    info = {}
     if result:
         info['success'] = 1
         response['msg'] = "注册成功"
@@ -72,21 +71,26 @@ def housePriceTrend():
     area = request.values.get("area")
     result = search(city, area)
     response = {}
-    if result:
+    if result and not ('msg' in result.keys()):
         response['msg'] = "搜索成功"
         response['result'] = result
         response['code'] = 1
+    elif result and 'msg' in result.keys():
+        response['msg'] = result["msg"]
+        response['result'] = result
+        response['code'] = 1
     else:
-        response['msg'] = "搜索失败，城市或区域错误"
+        response['msg'] = "没有数据，请检查城市小区是否输入正确！"
         response['result'] = {}
         response['code'] = 0
     return response
 
+
 @app.route("/getCaptcha")
 def captchaRouter():
-    #用户名 查看用户名请登录用户中心->验证码、通知短信->帐户及签名设置->APIID
+    # 用户名 查看用户名请登录用户中心->验证码、通知短信->帐户及签名设置->APIID
     phone = request.values.get("phone")
-    result =getCaptcha(phone)
+    result = getCaptcha(phone)
     response = {}
     if result:
         response['msg'] = "验证码发送成功"
@@ -97,6 +101,7 @@ def captchaRouter():
         response['result'] = {}
         response['code'] = 0
     return response
+
 
 if __name__ == '__main__':
     app.run(

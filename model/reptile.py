@@ -15,15 +15,18 @@ def search(city, district):
     div = soup.find("div", attrs={"class": "trend01b"})
     em = div.find_all("em")
     res = {}
-    result = {}
+    analyze = {}
     graph = {"title": ["房价涨幅", "房价跌幅"]}
     inc = {"graphTitle": ["价格", "涨幅"]}
     dec = {"graphTitle": ["价格", "跌幅"]}
-    result["totalProperty"] = em[0].text
-    result["averagePriceLastWeek"] = em[1].text
-    result["averagePriceThisWeek"] = em[2].text
-    result["quoteChange"] = em[3].text
-    res["analyze"] = result
+    if len(em) != 0:
+        analyze["totalProperty"] = em[0].text
+        analyze["averagePriceLastWeek"] = em[1].text
+        analyze["averagePriceThisWeek"] = em[2].text
+        analyze["quoteChange"] = em[3].text
+    else:
+        res["msg"] = "没有房价走势数据"
+    res["analyze"] = analyze
 
     # 涨跌幅
     # 下载指定网页
@@ -85,5 +88,4 @@ def search(city, district):
     dec["graphData"] = [c3, d3]
     graph["data"] = [inc, dec]
     res["graph"] = graph
-    print(res)
     return res
