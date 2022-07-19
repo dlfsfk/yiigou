@@ -6,10 +6,8 @@ from sqlalchemy import create_engine
 def classify(page):
     engine = create_engine('mysql+pymysql://root:2458166022@localhost:3306/houseprice?charset=utf8')
     # 创建SQL查询语句：
-
-    sql = 'SELECT * FROM classify_data3 limit {},10'.format(page-1)
+    sql = 'SELECT * FROM classify_data3 limit {},10'.format((page - 1) * 10)
     # 使用pandas读取数据库：
-
     df = pd.read_sql(sql, engine)
     list=[]
     col=len(df.count())
@@ -21,4 +19,5 @@ def classify(page):
             i+=1
         j+=1
     print(list)
-classify(1)
+    return list
+classify(2)
