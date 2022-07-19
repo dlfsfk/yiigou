@@ -8,6 +8,7 @@ from model.register import add_user
 from model.reptile import search
 from model.captcha import getCaptcha
 from model.classify import classify
+from model.city import search1
 
 app = Flask(__name__)
 CORS(app, resources=r'/*')
@@ -103,6 +104,22 @@ def captchaRouter():
 def classify():
     page = request.values.get("page")
     result = classify(page)
+    response = {}
+    if result:
+        response['msg'] = "搜索成功"
+        response['result'] = result
+        response['code'] = 1
+    else:
+        response['msg'] = "搜索失败"
+        response['result'] = {}
+        response['code'] = 0
+    return response
+
+@app.route("/searchHouseByA")
+def searchHouseByA():
+    n1 = request.values.get("n1")
+    n2 = request.values.get("n2")
+    result = search1(n1,n2)
     response = {}
     if result:
         response['msg'] = "搜索成功"
