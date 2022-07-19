@@ -12,6 +12,25 @@ def add_user(account, password, name):
     return result
     conn.close()
 
+def find_user_by_account(account):
+    conn.ping(reconnect=True)
+    cls = conn.cursor()
+    sql = "select * from user where account=%s"
+    cls.execute(sql, [account])
+    result = cls.fetchone()
+    conn.close()
+    return result
+
+
+def find_user_by_name(name):
+    conn.ping(reconnect=True)
+    cls = conn.cursor()
+    sql = "select * from user where name=%s"
+    cls.execute(sql, [name])
+    result = cls.fetchone()
+    conn.close()
+    return result
+
 
 
 
