@@ -3,6 +3,8 @@ import urllib
 from flask import Flask, request
 from flask_cors import CORS
 import json
+
+from model.classify import classify
 from model.login import login
 from model.register import add_user, find_user_by_account, find_user_by_name
 from model.reptile import search
@@ -71,10 +73,12 @@ def checkAccount():
     response = {}
     if result:
         response['msg'] = "手机号已被注册"
+        response['result'] = "手机号已被注册"
+        response['code'] = 1
+    else:
+        response['msg'] = "账号不存在"
         response['result'] = {}
         response['code'] = 0
-    else:
-        response['code'] = 1
     return response
 
 
@@ -128,6 +132,21 @@ def captchaRouter():
         response['code'] = 0
     return response
 
+
+@app.route("/searchHouse")
+def searchHouse():
+    page = request.values.get("page")
+    result = classify(int(page))
+    response = {}
+    if result:
+        response['msg'] = "搜索成功"
+        response['result'] = result
+        response['code'] = 1
+    else:
+        response['msg'] = "搜索失败"
+        response['result'] = {}
+        response['code'] = 0
+    return response
 
 if __name__ == '__main__':
     app.run(

@@ -2,6 +2,7 @@ from config import conn
 
 
 def add_user(account, password, name):
+    conn.ping(reconnect=True)
     cls = conn.cursor()
     sql = "INSERT INTO user(account, password, name, authority) VALUES ('%s','%s','%s', 0)" % (account, password, name)
     cls.execute(sql)
