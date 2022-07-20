@@ -33,16 +33,11 @@ def search_acreage(n1, n2):
     n3 = int(n1)
     n4 = int(n2)
     count0 = len(num0)
-    # print(count)
-    # if len(num0[26][1])==1:
-    #     print("面积固定")
     for i in range(0, count0):
-        # if (num0[i][1][0]>=n3 and num0[i][1][0]<=n4) or (num0[i][1][1]>=n3 and num0[i][1][1]<=n4) :
-        #     id0.append(num0[i][0])
-        if num0[i][1][0] >= n3 and num0[i][1][0] <= n4:
+        if n3 <= num0[i][1][0] <= n4:
             id0.append(num0[i][0])
-        if len(num0[i][1]) != 1:
-            if num0[i][1][1] >= n3 and num0[i][1][1] <= n4:
+        elif len(num0[i][1]) != 1:
+            if n3 <= num0[i][1][1] <= n4:
                 id0.append(num0[i][0])
     print(id0)
 
@@ -112,6 +107,7 @@ def search_price(p1, p2, page):
     count1 = len(id0)
     print(count1)
     result = []
+    count2 = count1-int(count1/10)*10
     if page < int(count1 / 10 + 1):
         for i in range((page - 1) * 10, (page - 1) * 10 + 10):
             sql = 'SELECT * FROM classify_data3 where id = %s' % id0[i]
@@ -131,7 +127,7 @@ def search_price(p1, p2, page):
             result.append(info)
         # print(result)
     if page == int(count1 / 10 + 1):
-        for i in range((page - 1) * 10, (page - 1) * 10 + 7):
+        for i in range((page - 1) * 10, (page - 1) * 10 + count2):
             sql = 'SELECT * FROM classify_data3 where id = %s' % id0[i]
             df = pandas.read_sql(sql, engine)
             # print(df)
