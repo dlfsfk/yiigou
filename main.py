@@ -3,6 +3,8 @@ import urllib
 from flask import Flask, request
 from flask_cors import CORS
 import json
+
+from model.graphData import getGraphData
 from model.searchHouse import searchByArea, searchByprice
 from model.classify import classify
 from model.login import login
@@ -178,6 +180,21 @@ def searchHouseByPrice():
         response['code'] = 1
     else:
         response['msg'] = "搜索失败"
+        response['result'] = {}
+        response['code'] = 0
+    return response
+
+@app.route("/predictHouseTrend")
+def predictHouseTrend():
+    city = request.values.get("city")
+    result = getGraphData(city)
+    response = {}
+    if result:
+        response['msg'] = "预测成功"
+        response['result'] = result
+        response['code'] = 1
+    else:
+        response['msg'] = "预测失败"
         response['result'] = {}
         response['code'] = 0
     return response
