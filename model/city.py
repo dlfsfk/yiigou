@@ -39,7 +39,7 @@ def search1(n1,n2,page):
         #     id0.append(num0[i][0])
         if num0[i][1][0]>=n3 and num0[i][1][0]<=n4:
             id0.append(num0[i][0])
-        if len(num0[i][1])!=1:
+        elif len(num0[i][1])!=1:
             if num0[i][1][1]>=n3 and num0[i][1][1]<=n4:
                 id0.append(num0[i][0])
     print(id0)
@@ -47,7 +47,9 @@ def search1(n1,n2,page):
     engine = create_engine('mysql+pymysql://root:2458166022@localhost:3306/houseprice?charset=utf8')
     count1=len(id0)
     print(count1)
-    # print(int(count1/10+1))
+    # print(int(count1/10)+1)
+    count2=count1-int(count1 / 10 )*10
+    # print(count2)
     result = []
     if page<int(count1/10+1):
         for i in range((page-1)*10,(page-1)*10+10):
@@ -68,7 +70,7 @@ def search1(n1,n2,page):
             result.append(info)
         # print(result)
     if page==int(count1/10+1):
-        for i in range((page-1)*10,(page-1)*10+7):
+        for i in range((page-1)*10,(page-1)*10+count2):
             sql = 'SELECT * FROM classify_data3 where id = %s' % id0[i]
             df =pandas.read_sql(sql, engine)
             # print(df)
@@ -90,4 +92,4 @@ def search1(n1,n2,page):
     res["info"]=result
     print(res)
     return res
-search1(10,100,47)
+search1(0,60,1)
