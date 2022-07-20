@@ -7,6 +7,7 @@ from model.login import login
 from model.register import add_user, find_user_by_name, find_user_by_account
 from model.reptile import search
 from model.captcha import getCaptcha
+from model.searchHouse import search_acreage
 
 app = Flask(__name__)
 CORS(app, resources=r'/*')
@@ -125,6 +126,43 @@ def captchaRouter():
         response['result'] = {}
         response['code'] = 0
     return response
+
+
+@app.route("/searchHouseByA")
+def searchHouseByA():
+    n1 = request.values.get("n1")
+    n2 = request.values.get("n2")
+    page = request.values.get("page")
+    result = search_acreage(n1, n2, page)
+    response = {}
+    if result:
+        response['msg'] = "搜索成功"
+        response['result'] = result
+        response['code'] = 1
+    else:
+        response['msg'] = "搜索失败"
+        response['result'] = {}
+        response['code'] = 0
+    return response
+
+
+@app.route("/searchHouseByP")
+def searchHouseByP():
+    p1 = request.values.get("p1")
+    p2 = request.values.get("p2")
+    page = request.values.get("page")
+    result = search_acreage(p1, p2, page)
+    response = {}
+    if result:
+        response['msg'] = "搜索成功"
+        response['result'] = result
+        response['code'] = 1
+    else:
+        response['msg'] = "搜索失败"
+        response['result'] = {}
+        response['code'] = 0
+    return response
+
 
 
 if __name__ == '__main__':
