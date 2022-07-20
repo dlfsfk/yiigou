@@ -3,7 +3,7 @@ import urllib
 from flask import Flask, request
 from flask_cors import CORS
 import json
-
+from model.searchHouse import searchByArea, searchByprice
 from model.classify import classify
 from model.login import login
 from model.register import add_user, find_user_by_account, find_user_by_name
@@ -137,6 +137,40 @@ def captchaRouter():
 def searchHouse():
     page = request.values.get("page")
     result = classify(int(page))
+    response = {}
+    if result:
+        response['msg'] = "搜索成功"
+        response['result'] = result
+        response['code'] = 1
+    else:
+        response['msg'] = "搜索失败"
+        response['result'] = {}
+        response['code'] = 0
+    return response
+
+@app.route("/searchHouseByArea")
+def searchHouseByA():
+    min = request.values.get("min")
+    max = request.values.get("max")
+    page = request.values.get("page")
+    result = searchByArea(min,max,int(page))
+    response = {}
+    if result:
+        response['msg'] = "搜索成功"
+        response['result'] = result
+        response['code'] = 1
+    else:
+        response['msg'] = "搜索失败"
+        response['result'] = {}
+        response['code'] = 0
+    return response
+
+@app.route("/searchHouseByPrice")
+def searchHouseByPrice():
+    min = request.values.get("min")
+    max = request.values.get("max")
+    page = request.values.get("page")
+    result = searchByprice(min, max, int(page))
     response = {}
     if result:
         response['msg'] = "搜索成功"
