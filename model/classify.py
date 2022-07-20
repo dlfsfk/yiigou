@@ -11,9 +11,9 @@ def classify(page):
     df = pd.read_sql(sql, engine)
     print(df)
     result=[]
-    # print(df.iloc[0])
 
     col=len(df.count())
+    print(col)
     for j in range(0,10):
         info = {}
         info["id"] = int(df.iloc[j][0])
@@ -28,6 +28,10 @@ def classify(page):
         info["total_price"] = df.iloc[j][9]
         result.append(info)
         j += 1
-    print(result)
-    return list
+    # print(result)
+    res={}
+    res["page"]=100
+    res["info"]=result
+    print(res)
+    return res
 classify(2)

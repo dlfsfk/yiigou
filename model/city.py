@@ -2,7 +2,7 @@ import re
 import pandas
 import pymysql
 from sqlalchemy import create_engine
-def search1(n1,n2):
+def search1(n1,n2,page):
     db = pymysql.connect(host="127.0.0.1", user="root",
 
                          passwd="2458166022",
@@ -47,23 +47,47 @@ def search1(n1,n2):
     engine = create_engine('mysql+pymysql://root:2458166022@localhost:3306/houseprice?charset=utf8')
     count1=len(id0)
     print(count1)
+    # print(int(count1/10+1))
     result = []
-    for i in range(0,count1):
-        sql = 'SELECT * FROM classify_data3 where id = %s' % id0[i]
-        df =pandas.read_sql(sql, engine)
-        # print(df)
-        info = {}
-        info["id"] = int(df.iloc[0][0])
-        info["img"] = df.iloc[0][1]
-        info["name"] = df.iloc[0][2]
-        info["price"] = df.iloc[0][3]
-        info["area"] = df.iloc[0][4]
-        info["address"] = df.iloc[0][5]
-        info["business"] = df.iloc[0][6]
-        info["room"] = list(map(lambda x: (x.replace(' ', ''))[1:-1], (df.iloc[0][7][1:-1].split(","))))
-        info["tag"] = list(map(lambda x: (x.replace(' ', ''))[1:-1], (df.iloc[0][8][1:-1].split(","))))
-        info["total_price"] = df.iloc[0][9]
-        result.append(info)
-    print(result)
-    return result
-search(10,100)
+    if page<int(count1/10+1):
+        for i in range((page-1)*10,(page-1)*10+10):
+            sql = 'SELECT * FROM classify_data3 where id = %s' % id0[i]
+            df =pandas.read_sql(sql, engine)
+            # print(df)
+            info = {}
+            info["id"] = int(df.iloc[0][0])
+            info["img"] = df.iloc[0][1]
+            info["name"] = df.iloc[0][2]
+            info["price"] = df.iloc[0][3]
+            info["area"] = df.iloc[0][4]
+            info["address"] = df.iloc[0][5]
+            info["business"] = df.iloc[0][6]
+            info["room"] = list(map(lambda x: (x.replace(' ', ''))[1:-1], (df.iloc[0][7][1:-1].split(","))))
+            info["tag"] = list(map(lambda x: (x.replace(' ', ''))[1:-1], (df.iloc[0][8][1:-1].split(","))))
+            info["total_price"] = df.iloc[0][9]
+            result.append(info)
+        # print(result)
+    if page==int(count1/10+1):
+        for i in range((page-1)*10,(page-1)*10+7):
+            sql = 'SELECT * FROM classify_data3 where id = %s' % id0[i]
+            df =pandas.read_sql(sql, engine)
+            # print(df)
+            info = {}
+            info["id"] = int(df.iloc[0][0])
+            info["img"] = df.iloc[0][1]
+            info["name"] = df.iloc[0][2]
+            info["price"] = df.iloc[0][3]
+            info["area"] = df.iloc[0][4]
+            info["address"] = df.iloc[0][5]
+            info["business"] = df.iloc[0][6]
+            info["room"] = list(map(lambda x: (x.replace(' ', ''))[1:-1], (df.iloc[0][7][1:-1].split(","))))
+            info["tag"] = list(map(lambda x: (x.replace(' ', ''))[1:-1], (df.iloc[0][8][1:-1].split(","))))
+            info["total_price"] = df.iloc[0][9]
+            result.append(info)
+        # print(result)
+    res={}
+    res["page"]=int(count1/10+1)
+    res["info"]=result
+    print(res)
+    return res
+search1(10,100,47)

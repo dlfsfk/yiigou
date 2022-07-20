@@ -119,7 +119,8 @@ def classify():
 def searchHouseByA():
     n1 = request.values.get("n1")
     n2 = request.values.get("n2")
-    result = search1(n1,n2)
+    page = request.values.get("page")
+    result = search1(n1,n2,page)
     response = {}
     if result:
         response['msg'] = "搜索成功"
