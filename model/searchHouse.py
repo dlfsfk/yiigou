@@ -86,7 +86,6 @@ def searchByprice(p1, p2, page):
     sql = 'SELECT id,price FROM house '
     cls.execute(sql)
     conn = cls.fetchall()
-    print(conn)
     num0 = []
     for i in range(0, 1800):
         if conn[i][1] == "价格待定":
@@ -140,6 +139,7 @@ def searchByprice(p1, p2, page):
             info["total_price"] = df.iloc[0][9]
             result.append(info)
     res = {}
-    res["page"] = count1
+    res["total"] = count1
     res["info"] = result
+    print(res)
     return res
