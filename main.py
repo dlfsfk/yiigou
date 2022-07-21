@@ -11,6 +11,7 @@ from model.login import login
 from model.register import add_user, find_user_by_account, find_user_by_name
 from model.reptile import search
 from model.captcha import getCaptcha
+from model.rank import rank1
 
 app = Flask(__name__)
 CORS(app, resources=r'/*')
@@ -198,6 +199,22 @@ def predictHouseTrend():
         response['result'] = {}
         response['code'] = 0
     return response
+
+@app.route("/rank")
+def rank():
+    city = request.values.get("city")
+    result = rank1(city)
+    response = {}
+    if result:
+        response['msg'] = "查询成功"
+        response['result'] = result
+        response['code'] = 1
+    else:
+        response['msg'] = "查询失败"
+        response['result'] = {}
+        response['code'] = 0
+    return response
+
 
 if __name__ == '__main__':
     app.run(

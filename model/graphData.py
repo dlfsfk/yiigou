@@ -15,5 +15,7 @@ def getGraphData(city):
     predictGraph["graphName"] = ["二手房", "新房"]
     predictGraph["graphData"] = [oldhousePredictData, newhousePredictData]
     res["data"] = [basicGraph, predictGraph]
+    print(res)
     return res
+getGraphData("武汉")
 
