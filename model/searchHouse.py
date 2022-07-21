@@ -141,5 +141,4 @@ def searchByprice(p1, p2, page):
     res = {}
     res["total"] = count1
     res["info"] = result
-    print(res)
     return res
