@@ -5,6 +5,7 @@ from flask_cors import CORS
 import json
 
 from model.graphData import getGraphData
+from model.rank import getRankData
 from model.searchHouse import searchByArea, searchByprice
 from model.classify import classify
 from model.login import login
@@ -199,6 +200,20 @@ def predictHouseTrend():
         response['code'] = 0
     return response
 
+@app.route("/rank")
+def rankRouter():
+    city = request.values.get("city")
+    result = getRankData(city)
+    response = {}
+    if result:
+        response['msg'] = "查询成功"
+        response['result'] = result
+        response['code'] = 1
+    else:
+        response['msg'] = "查询失败"
+        response['result'] = {}
+        response['code'] = 0
+    return response
 
 if __name__ == '__main__':
     app.run(
