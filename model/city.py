@@ -3,16 +3,20 @@ import requests
 
 from bs4 import BeautifulSoup
 
-headers = {
+from xpinyin import Pinyin
 
-'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.134 Safari/537.36 Edg/103.0.1264.71'
 
-}#爬虫[Requests设置请求头Headers],伪造浏览器
 def pcity(city):
     # 核心爬取代码
+    headers = {
 
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.134 Safari/537.36 Edg/103.0.1264.71'
+
+    }  # 爬虫[Requests设置请求头Headers],伪造浏览器
+
+    p = Pinyin()
+    city = p.get_pinyin(city, '')
     url= 'https://www.anjuke.com/fangjia/{}2022/'.format(city)
-
     params = {"show_ram":1}
 
     response = requests.get(url,params=params, headers=headers)#访问url
@@ -33,4 +37,4 @@ def pcity(city):
 
     print(listData)#打印
     return listData
-pcity("hunan")
+pcity("湖北")
