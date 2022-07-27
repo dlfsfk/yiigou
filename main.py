@@ -5,6 +5,7 @@ from flask_cors import CORS
 import json
 
 from model.city import getCityData
+from model.county import getCountyData
 from model.graphData import getGraphData
 from model.province import getProvinceData
 from model.rank import getRankData
@@ -235,6 +236,21 @@ def province():
 def city():
     province = request.values.get("province")
     result = getCityData(province)
+    response = {}
+    if result:
+        response['msg'] = "查询成功"
+        response['result'] = result
+        response['code'] = 1
+    else:
+        response['msg'] = "查询失败"
+        response['result'] = {}
+        response['code'] = 0
+    return response
+
+@app.route("/county")
+def county():
+    county = request.values.get("county")
+    result = getCountyData(county)
     response = {}
     if result:
         response['msg'] = "查询成功"
