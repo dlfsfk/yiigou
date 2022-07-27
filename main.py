@@ -14,6 +14,7 @@ from model.captcha import getCaptcha
 from model.rank import rank1
 from model.province import pprovince
 from model.city import pcity
+from model.county import county
 
 app = Flask(__name__)
 CORS(app, resources=r'/*')
@@ -235,6 +236,21 @@ def province():
 def province():
     city = request.values.get("city")
     result = pcity(city)
+    response = {}
+    if result:
+        response['msg'] = "查询成功"
+        response['result'] = result
+        response['code'] = 1
+    else:
+        response['msg'] = "查询失败"
+        response['result'] = {}
+        response['code'] = 0
+    return response
+
+@app.route("/county")
+def province():
+    county = request.values.get("county")
+    result = county(county)
     response = {}
     if result:
         response['msg'] = "查询成功"

@@ -37,3 +37,4 @@ def pprovince():
 
     print (listData)#打印
     return listData
+pprovince()
