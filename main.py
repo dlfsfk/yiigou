@@ -4,7 +4,9 @@ from flask import Flask, request
 from flask_cors import CORS
 import json
 
+from model.city import getCityData
 from model.graphData import getGraphData
+from model.province import getProvinceData
 from model.rank import getRankData
 from model.searchHouse import searchByArea, searchByprice
 from model.classify import classify
@@ -204,6 +206,35 @@ def predictHouseTrend():
 def rankRouter():
     city = request.values.get("city")
     result = getRankData(city)
+    response = {}
+    if result:
+        response['msg'] = "查询成功"
+        response['result'] = result
+        response['code'] = 1
+    else:
+        response['msg'] = "查询失败"
+        response['result'] = {}
+        response['code'] = 0
+    return response
+
+@app.route("/province")
+def province():
+    result = getProvinceData()
+    response = {}
+    if result:
+        response['msg'] = "查询成功"
+        response['result'] = result
+        response['code'] = 1
+    else:
+        response['msg'] = "查询失败"
+        response['result'] = {}
+        response['code'] = 0
+    return response
+
+@app.route("/city")
+def city():
+    province = request.values.get("province")
+    result = getCityData(province)
     response = {}
     if result:
         response['msg'] = "查询成功"
