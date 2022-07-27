@@ -12,6 +12,8 @@ from model.register import add_user, find_user_by_account, find_user_by_name
 from model.reptile import search
 from model.captcha import getCaptcha
 from model.rank import rank1
+from model.province import pprovince
+from model.city import pcity
 
 app = Flask(__name__)
 CORS(app, resources=r'/*')
@@ -215,6 +217,34 @@ def rank():
         response['code'] = 0
     return response
 
+@app.route("/province")
+def province():
+    result = pprovince()
+    response = {}
+    if result:
+        response['msg'] = "查询成功"
+        response['result'] = result
+        response['code'] = 1
+    else:
+        response['msg'] = "查询失败"
+        response['result'] = {}
+        response['code'] = 0
+    return response
+
+@app.route("/city")
+def province():
+    city = request.values.get("city")
+    result = pcity(city)
+    response = {}
+    if result:
+        response['msg'] = "查询成功"
+        response['result'] = result
+        response['code'] = 1
+    else:
+        response['msg'] = "查询失败"
+        response['result'] = {}
+        response['code'] = 0
+    return response
 
 if __name__ == '__main__':
     app.run(
