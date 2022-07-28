@@ -204,7 +204,7 @@ def predictHouseTrend():
     return response
 
 @app.route("/rank")
-def rankRouter():
+def rankRoute():
     city = request.values.get("city")
     result = getRankData(city)
     response = {}
@@ -219,7 +219,7 @@ def rankRouter():
     return response
 
 @app.route("/province")
-def province():
+def provinceRoute():
     result = getProvinceData()
     response = {}
     if result:
@@ -233,7 +233,7 @@ def province():
     return response
 
 @app.route("/city")
-def city():
+def cityRoute():
     province = request.values.get("province")
     result = getCityData(province)
     response = {}
@@ -248,7 +248,7 @@ def city():
     return response
 
 @app.route("/county")
-def county():
+def countyRoute():
     county = request.values.get("county")
     result = getCountyData(county)
     response = {}
