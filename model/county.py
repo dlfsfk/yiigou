@@ -24,5 +24,5 @@ def county(county):
         price = j.xpath('.//td[2]/text()')[0]
         listData.append([county,price])
     print(listData)
-
-county("咸宁")
+    return listData
+# county("咸宁")
